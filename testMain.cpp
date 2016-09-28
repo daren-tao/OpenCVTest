@@ -27,6 +27,28 @@ int main(int argc, char** argv)
 	cv::Mat orgImg = cv::imread("testImages\\depth_215.bmp");
 	logInfo("origin image channels = %d", orgImg.channels());
 
+	//	*************************************************************************************************
+	cv::initModule_nonfree();	//	if use SIFT or SURF
+	cv::Ptr<cv::FeatureDetector> features_Detector = cv::FeatureDetector::create("SIFT");
+	cv::Ptr<cv::DescriptorExtractor> descriptor_Extrator = cv::DescriptorExtractor::create("SIFT");
+	if (features_Detector.empty() || descriptor_Extrator.empty()){
+		logInfo("Failed to create detector.");
+		cv::destroyAllWindows();
+		return -1;
+	}
+
+	std::vector<cv::KeyPoint> keyPoints;
+	features_Detector->detect(orgImg, keyPoints);
+	cv::Mat descriptors;
+	descriptor_Extrator->compute(orgImg, keyPoints, descriptors);
+
+	cv::Mat img_Keypoints;
+	cv::drawKeypoints(orgImg, keyPoints, img_Keypoints, cv::Scalar::all(-1), 0);
+	cv::namedWindow("Image KeyPoints");
+	cv::imshow("Image KeyPoints", img_Keypoints);
+
+	//	*************************************************************************************************
+
 	cv::Mat grayImg;
 	cv::cvtColor(orgImg, grayImg, CV_RGB2GRAY);
 	logInfo("binary image channels = %d, type = %d", grayImg.channels(), grayImg.type());
