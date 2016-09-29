@@ -131,7 +131,7 @@ int main(int argc, char** argv)
 		}
 		mu[i] = moments(contoursFiltered[i], false);
 		mc[i] = Point2f(mu[i].m10 / mu[i].m00, mu[i].m01 / mu[i].m00);
-		circle(orgImg, mc[i], 4, Scalar(0, 255, 0), -1, 8, 0);
+		circle(orgImg, mc[i], 5, Scalar(150, 20, 191), -1, 8, 0);
 		for (int j = 0; j < contoursFiltered[i].size(); j++)
 		{
 			if (contoursFiltered[i].at(j).y >((mc[i].y + roi_y_bot) / 2))
@@ -147,7 +147,8 @@ int main(int argc, char** argv)
 		for (int i = 0; i < contoursFiltered.size(); i++)
 			minRect[i] = minAreaRect(Mat(contoursFiltered[i]));
 
-		Point2f rect_points[4]; minRect[i].points(rect_points);
+		Point2f rect_points[4];
+		minRect[i].points(rect_points);
 		for (int j = 0; j < 4; j++){
 			if (DISPLAY_ROI_TIGHT_BOUND)
 				line(orgImg, rect_points[j], rect_points[(j + 1) % 4], Scalar(0, 255, 255), 1, 8);
