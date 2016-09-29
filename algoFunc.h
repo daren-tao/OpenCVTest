@@ -9,6 +9,7 @@
 #include "opencv2\ml\ml.hpp"
 #include "opencv2\objdetect\objdetect.hpp"
 #include "opencv2\nonfree\nonfree.hpp"
+#include "opencv2\video\background_segm.hpp"
 
 class algoFunc
 {
