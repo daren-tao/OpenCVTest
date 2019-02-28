@@ -1,14 +1,15 @@
+/***************************************************************
+ *
+ ***************************************************************/
 #include <iostream>
 #include <stdarg.h>
 #include <conio.h>
 #include <sstream>
 
-#include "algoFunc.h"
-
 using namespace cv;
 
 
-#ifndef _DEBUG_NO_LOG_MSG_
+#ifdef _DEBUG_LOG_MSG_
 	#define logInfo( format, ... )	printf( "%s\t[%d]\t"format"\n", __FILE__, __LINE__, ##__VA_ARGS__ );
 #else
 	#define logInfo( format, ... )
@@ -51,9 +52,7 @@ int main(int argc, char** argv)
 
 	cv::Mat binImg;
 	cv::threshold(grayImg, binImg, 200, 250, cv::THRESH_BINARY);
-//	int niters = 2;	//	num of repeat    
-//	cv::erode(binImg, binImg, Mat(), Point(-1, -1), niters * 2);	//	EROE!  
-//	dilate(binImg, binImg, Mat(), Point(-1, -1), niters * 2);		//	DILATE!
+
 	cv::erode(binImg, binImg, Mat(), Point(-1, -1), 3);	//	EROE!  
 	cv::dilate(binImg, binImg, Mat(), Point(-1, -1), 2);		//	DILATE!
 
@@ -63,19 +62,6 @@ int main(int argc, char** argv)
 	vector<vector<Point>>contoursFiltered;
 	vector<Vec4i> hierarchy;
 	cv::findContours(binImg, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE);
-
-//	int i = 0;
-//	cv::namedWindow("contours");
-//	do {
-//		cv::Mat tmpImage;
-//		orgImg.copyTo(tmpImage);
-//		drawContours(tmpImage, contours, i, cv::Scalar(255, 0, 0), 2);
-//
-//		logInfo("Draw contours %d, [%d, %d, %d, %d]", i, hierarchy[i][0], hierarchy[i][1], hierarchy[i][2], hierarchy[i][3] );
-//		cv::imshow("contours", tmpImage);
-//		if (cv::waitKey() == 0x1b)
-//			i++;
-//	} while (i < contours.size());
 
 	double maxSizeSoFar = -1;
 	int minSizeLimit = 5000;
